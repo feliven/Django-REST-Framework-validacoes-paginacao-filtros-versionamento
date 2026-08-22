@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from escola.models import Estudante, Curso, Matricula
-from escola.validators import cpf_invalido, nome_invalido
+from escola.validators import cpf_invalido, nome_invalido, celular_invalido
 
 
 class EstudanteSerializer(serializers.ModelSerializer):
@@ -15,6 +15,11 @@ class EstudanteSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 {"nome": "Nome deve conter apenas letras"}
             )
+        if celular_invalido(attrs["numero_celular"]):
+            raise serializers.ValidationError(
+                {"celular": "Celular precisa estar no formato 11 55555-4444"}
+            )
+
         return attrs
 
 
