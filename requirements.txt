@@ -1,6 +1,7 @@
 asgiref
 Django
 djangorestframework
+Faker
 Markdown
 sqlparse
 validate-docbr
