@@ -7,6 +7,16 @@ class EstudanteSerializer(serializers.ModelSerializer):
         model = Estudante
         fields = "__all__"
 
+    def validate_cpf(self, cpf):
+        if len(cpf) != 11:
+            raise serializers.ValidationError("CPF precisa ter 11 dígitos")
+        return cpf
+
+    def validate_nome(self, nome):
+        if not nome.isalpha():
+            raise serializers.ValidationError("Nome deve conter apenas letras")
+        return nome
+
 
 class CursoSerializer(serializers.ModelSerializer):
     class Meta:
