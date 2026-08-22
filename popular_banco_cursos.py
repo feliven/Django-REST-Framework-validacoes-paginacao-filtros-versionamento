@@ -25,6 +25,8 @@ niveis = ["B", "I", "A"]
 
 
 def criar_cursos():
+    from escola.models import Curso
+
     for codigo, descricao in dados:
         nivel = random.choice(niveis)
         Curso.objects.create(codigo=codigo, descricao=descricao, nivel=nivel)

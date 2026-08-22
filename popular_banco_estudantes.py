@@ -1,16 +1,17 @@
 import os
+import random
+
 import django
+from faker import Faker
+from validate_docbr import CPF
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "setup.settings")
 django.setup()
 
-from faker import Faker
-from validate_docbr import CPF
-import random
-from escola.models import Estudante
-
 
 def criando_pessoas(quantidade_de_pessoas):
+    from escola.models import Estudante
+
     fake = Faker("pt_BR")
     Faker.seed(10)
     for _ in range(quantidade_de_pessoas):
