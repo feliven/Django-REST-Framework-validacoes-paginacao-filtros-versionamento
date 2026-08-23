@@ -1,3 +1,4 @@
+from django.db.models.functions import Lower
 from rest_framework import viewsets, generics
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.filters import OrderingFilter
@@ -21,11 +22,12 @@ class LongPagination(PageNumberPagination):
 
 
 class EstudanteViewSet(viewsets.ModelViewSet):
-    queryset = Estudante.objects.all()
+    queryset = Estudante.objects.annotate(nome_lower=Lower("nome")).all()
     serializer_class = EstudanteSerializer
     pagination_class = LongPagination
     filter_backends = [DjangoFilterBackend, OrderingFilter]
-    ordering_fields = ["nome"]
+    ordering_fields = ["nome_lower"]
+    ordering = ["nome_lower"]
 
 
 class CursoViewSet(viewsets.ModelViewSet):
