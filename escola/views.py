@@ -6,6 +6,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from escola.models import Estudante, Curso, Matricula
 from escola.serializers import (
     EstudanteSerializer,
+    EstudanteSerializerV2,
     CursoSerializer,
     MatriculaSerializer,
     MatriculasPorEstudanteSerializer,
@@ -32,11 +33,15 @@ class CaseInsensitiveOrderingFilter(OrderingFilter):
 
 class EstudanteViewSet(viewsets.ModelViewSet):
     queryset = Estudante.objects.all()
-    serializer_class = EstudanteSerializer
     pagination_class = LongPagination
     filter_backends = [DjangoFilterBackend, CaseInsensitiveOrderingFilter, SearchFilter]
     ordering_fields = ["nome"]
     search_fields = ["nome", "cpf"]
+
+    def get_serializer_class(self):  # type: ignore[override]
+        if getattr(self.request, "version", None) == "v2":
+            return EstudanteSerializerV2
+        return EstudanteSerializer
 
 
 class CursoViewSet(viewsets.ModelViewSet):
