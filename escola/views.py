@@ -1,5 +1,7 @@
 from rest_framework import viewsets, generics
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.filters import OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
 from escola.models import Estudante, Curso, Matricula
 from escola.serializers import (
     EstudanteSerializer,
@@ -22,6 +24,8 @@ class EstudanteViewSet(viewsets.ModelViewSet):
     queryset = Estudante.objects.all()
     serializer_class = EstudanteSerializer
     pagination_class = LongPagination
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    ordering_fields = ["nome"]
 
 
 class CursoViewSet(viewsets.ModelViewSet):
