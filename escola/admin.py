@@ -38,7 +38,7 @@ class CaseInsensitiveOrderingAdmin(admin.ModelAdmin):
 class ListandoEstudantes(CaseInsensitiveOrderingAdmin):
     list_display = ("id", "nome", "email")
     list_display_links = ("id", "nome")
-    search_fields = ("nome",)
+    search_fields = ("nome", "cpf")
     ordering = ("nome",)
     list_editable = ("email",)
     list_per_page = 10

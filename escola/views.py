@@ -1,7 +1,7 @@
 from django.db.models.functions import Lower
 from rest_framework import viewsets, generics
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.filters import OrderingFilter
+from rest_framework.filters import OrderingFilter, SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from escola.models import Estudante, Curso, Matricula
 from escola.serializers import (
@@ -34,8 +34,9 @@ class EstudanteViewSet(viewsets.ModelViewSet):
     queryset = Estudante.objects.all()
     serializer_class = EstudanteSerializer
     pagination_class = LongPagination
-    filter_backends = [DjangoFilterBackend, CaseInsensitiveOrderingFilter]
+    filter_backends = [DjangoFilterBackend, CaseInsensitiveOrderingFilter, SearchFilter]
     ordering_fields = ["nome"]
+    search_fields = ["nome", "cpf"]
 
 
 class CursoViewSet(viewsets.ModelViewSet):
