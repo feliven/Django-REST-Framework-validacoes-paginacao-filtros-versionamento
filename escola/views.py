@@ -1,4 +1,5 @@
 from rest_framework import viewsets, generics
+from rest_framework.pagination import PageNumberPagination
 from escola.models import Estudante, Curso, Matricula
 from escola.serializers import (
     EstudanteSerializer,
@@ -9,14 +10,24 @@ from escola.serializers import (
 )
 
 
+class ShortPagination(PageNumberPagination):
+    page_size = 10
+
+
+class LongPagination(PageNumberPagination):
+    page_size = 20
+
+
 class EstudanteViewSet(viewsets.ModelViewSet):
     queryset = Estudante.objects.all()
     serializer_class = EstudanteSerializer
+    pagination_class = LongPagination
 
 
 class CursoViewSet(viewsets.ModelViewSet):
     queryset = Curso.objects.all()
     serializer_class = CursoSerializer
+    pagination_class = ShortPagination
 
 
 class MatriculaViewSet(viewsets.ModelViewSet):
