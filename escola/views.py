@@ -21,13 +21,21 @@ class LongPagination(PageNumberPagination):
     page_size = 20
 
 
+class CaseInsensitiveOrderingFilter(OrderingFilter):
+    def filter_queryset(self, request, queryset, view):
+        ordering = self.get_ordering(request, queryset, view) or []
+        ordering = [
+            Lower(f[1:]).desc() if f.startswith("-") else Lower(f) for f in ordering
+        ]
+        return queryset.order_by(*ordering)
+
+
 class EstudanteViewSet(viewsets.ModelViewSet):
-    queryset = Estudante.objects.annotate(nome_lower=Lower("nome")).all()
+    queryset = Estudante.objects.all()
     serializer_class = EstudanteSerializer
     pagination_class = LongPagination
-    filter_backends = [DjangoFilterBackend, OrderingFilter]
-    ordering_fields = ["nome_lower"]
-    ordering = ["nome_lower"]
+    filter_backends = [DjangoFilterBackend, CaseInsensitiveOrderingFilter]
+    ordering_fields = ["nome"]
 
 
 class CursoViewSet(viewsets.ModelViewSet):

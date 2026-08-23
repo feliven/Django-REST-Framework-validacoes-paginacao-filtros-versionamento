@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.db.models.functions import Lower
 from escola.models import Estudante, Curso, Matricula
 
 
@@ -11,6 +12,9 @@ class ListandoEstudantes(admin.ModelAdmin):
     list_editable = ("email",)
     list_per_page = 10
 
+    def get_ordering(self, request):  # type: ignore[override]
+        return [Lower("nome")]
+
 
 class ListandoCursos(admin.ModelAdmin):
     list_display = ("codigo", "descricao", "nivel")
@@ -19,6 +23,9 @@ class ListandoCursos(admin.ModelAdmin):
     list_filter = ("nivel",)
     list_editable = ("nivel",)
     list_per_page = 10
+
+    def get_ordering(self, request):  # type: ignore[override]
+        return [Lower("codigo"), Lower("descricao")]
 
 
 class ListandoMatriculas(admin.ModelAdmin):
